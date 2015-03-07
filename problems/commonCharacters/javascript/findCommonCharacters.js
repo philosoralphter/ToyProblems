@@ -7,7 +7,7 @@ module.exports = function (string1, string2){
 
 
   for (var i=0; i<first.length; i++){
-    if (first[i].test(/\w/) && result.indexOf(first[i]) === -1 && second.indexOf(first[i]) >= 0 ){
+    if (first[i].search(/\w/) !=1 && result.indexOf(first[i]) === -1 && second.indexOf(first[i]) >= 0 ){
       result.push(first[i]);
     }
   }
