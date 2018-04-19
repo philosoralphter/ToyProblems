@@ -10,8 +10,8 @@ func IsAllUniqueChars (strings ...string) bool {
 	//MAP {runeVal: seen before}
 	charCounts := make(map[rune] bool)
 
-	for i, e := range strings {
-		for _, letterRune := range e {
+	for _, string := range strings {
+		for _, letterRune := range string {
 			if (charCounts[letterRune] == true /*&& letterRune != ' '*/) {
 				return false;
 			} else {
@@ -30,7 +30,7 @@ func IsAllUniqChars (strings ...string) bool {
 	// is NOT THIS INSTANCE lol
 
 	//for each string
-	for thisStringIdex, thisString := range strings {
+	for thisStringIndex, thisString := range strings {
 		//for each rune in the string
 		for thisRuneIndex, thisRune := range thisString {
 			//check each string
@@ -38,7 +38,7 @@ func IsAllUniqChars (strings ...string) bool {
 				//for this rune
 				for compRuneIndex, compRune := range compString {
 
-					if (!(thisStringIdex == compStringIndex &&
+					if (!(thisStringIndex == compStringIndex &&
 						thisRuneIndex == compRuneIndex) &&
 						thisRune == compRune){
 						return false
