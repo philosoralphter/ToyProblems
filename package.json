@@ -1,0 +1,19 @@
+{
+  "name": "toyproblems",
+  "version": "1.0.0",
+  "description": "just playin with toys",
+  "main": "none",
+  "scripts": {
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philosoralphter/ToyProblems.git"
+  },
+  "author": " <Ralph Samuel>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/philosoralphter/ToyProblems/issues"
+  },
+  "homepage": "https://github.com/philosoralphter/ToyProblems#readme"
+}
