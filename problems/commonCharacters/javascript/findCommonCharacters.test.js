@@ -1,5 +1,5 @@
-var mocha = require ('../../lib/node_modules/mocha/mocha.js');
-var chai = require('../../lib/node_modules/chai/chai.js');
+var mocha = require ('mocha');
+var chai = require('chai');
 
 var findCommonCharacters = require('./findCommonCharacters.js');
 chai.should();
