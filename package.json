@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/philosoralphter/ToyProblems/issues"
   },
-  "homepage": "https://github.com/philosoralphter/ToyProblems#readme"
+  "homepage": "https://github.com/philosoralphter/ToyProblems#readme",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "lodash": "^4.17.5",
+    "mocha": "^5.1.1"
+  }
 }
