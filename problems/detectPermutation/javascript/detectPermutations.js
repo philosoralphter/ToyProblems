@@ -15,14 +15,34 @@ function detectPermutations (str1, str2) {
 }
 
 function detectPermutationsNoSorting(str1, str2) {
-    let str1Chars = {};
-    let str2Chars = {};
+    let str1Chars = countChars(str1);
+    let str2Chars = countChars(str2);
+
+    if (Object.keys(str1Chars).length !== Object.keys(str2Chars).length) {
+        return false;
+    } else {
+        for (let char in str1Chars) {
+            if (str1Chars.hasOwnProperty(char) && str1Chars[char] !== str2Chars[char]) return false;
+        }
+        return true;
+    }
 
 
+    function countChars (str) {
+        let count = {};
+        for (let char in str) {
+            //initialize
+            count[char] = count[char] || 0;
+            //increment
+            count[char]++;
+        }
+
+        return count;
+    }
 
 }
 
 let str1 = "cdeflkjh";
 let str2 = "dcefhjkl";
 
-console.log( detectPermutations(str1, str2));
+console.log( detectPermutationsNoSorting(str1, str2));
