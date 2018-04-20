@@ -1,0 +1,1 @@
+Write a function that takes a string and returns true of all the parentheses, braces, and brackets are balanced. This means that every one that is opened is close, and that opened ones are not closed outside of the enclosing ones (scope) in which they were opened.
