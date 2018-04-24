@@ -1,11 +1,11 @@
 
 
-function findZeroedColumnsAndRows (matrix) {
+function zeroZeroedColumnsAndRows (matrix) {
     let zeroedColumns = {};
     let zeroedRows = {};
 
     for (let r=0; r<matrix.length; r++) {
-        for (let c=0; c<matrix.length; c++) {
+        for (let c=0; c<matrix[r].length; c++) {
             if (matrix[r][c] === 0) {
                 zeroedColumns[c] = true;
                 zeroedRows[r] = true;
@@ -36,3 +36,12 @@ function zeroColumns (matrix, columns) {
     }
 }
 
+let matrix1 = [
+    [0,2,3,4,6,3,5,4,8,6],
+    [7,2,3,4,6,3,5,4,8,5],
+    [4,2,3,4,0,3,4,9,8,3],
+    [9,2,3,4,6,3,5,3,8,2],
+    [9,2,3,4,6,3,5,4,8,5],
+    [6,2,3,4,6,3,5,0,8,9],
+]
+console.log(zeroZeroedColumnsAndRows(matrix1));
