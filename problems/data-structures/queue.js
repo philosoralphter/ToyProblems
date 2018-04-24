@@ -36,6 +36,10 @@ class Queue {
         return item;
     }
 
+    peek () {
+        return this.__data.head;
+    }
+
     pop () { return this.dequeue.apply(this, arguments)}]
     push () { return this.enqueue.apply(this, arguments)}
     length () { return this.__data.queueLength; }

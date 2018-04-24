@@ -25,7 +25,7 @@ class Stack  {
 
     }
 
-    peak () {
+    peek () {
         return this.__data.head.data;
     }
 
