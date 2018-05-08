@@ -1,3 +1,5 @@
+//Linked list queue
+
 moduel.exports = Queue;
 
 class Queue {
