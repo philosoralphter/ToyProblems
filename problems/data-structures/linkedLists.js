@@ -25,9 +25,6 @@ class SinglyLinkedNode {
         this.data = data;
         this.next = next || null;
 
-        this.toString = () => {
-            return this.data.toString()
-        }
     }
 }
 
@@ -64,7 +61,6 @@ class DoublyLinkedNode {
         this.prev = prev || null;
         this.next = next || null;
 
-        this.toString = () => {return this.data.toString()}
     }
 }
 
@@ -92,7 +88,7 @@ let listUtils = {
                 }
                 thisItem = thisItem.next;
             }
-            while (thisItem && thisItem.data);
+            while (thisItem && thisItem.data !==undefined && thisItem.data !== null);
         }
 
         return serializedList;
