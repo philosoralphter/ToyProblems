@@ -18,30 +18,10 @@ function deleteItem(item) {
     let item = testList.head.next.next.next; //should be the 3 at index 3
 
 
-    console.log('Entire List: ', serializeList(testList.head));
+    console.log('Entire List: ', lists.utils.serializeList(testList.head));
     console.log('Item to Delete: ', item);
     deleteItem(item);
-    console.log('Deleted.  Resulting List: ', serializeList(testList.head))
-
-
-
+    console.log('Deleted.  Resulting List: ', lists.utils.serializeList(testList.head))
 
 })();
 
-
-function serializeList(listHead) {
-    let serializedList = '';
-    {
-        let thisItem = listHead.head || listHead;
-        do {
-            serializedList += thisItem.data;
-            if (thisItem.next) {
-                serializedList += '->';
-            }
-            thisItem = thisItem.next;
-        }
-        while (thisItem && thisItem.data);
-    }
-
-    return serializedList;
-}

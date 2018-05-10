@@ -57,5 +57,25 @@ module.exports = {
     nodes: {
         SinglyLinked: SinglyLinkedNode,
         DoublyLinked: DoublyLinkedNode
+    },
+
+    utils: {
+        serializeList: function (listOrHead) {
+            let serializedList = '';
+
+            {
+                let thisItem = listOrHead.head || listOrHead;
+                do {
+                    serializedList += thisItem.data;
+                    if (thisItem.next) {
+                        serializedList += '->';
+                    }
+                    thisItem = thisItem.next;
+                }
+                while (thisItem && thisItem.data);
+            }
+
+            return serializedList;
+        }
     }
 };
