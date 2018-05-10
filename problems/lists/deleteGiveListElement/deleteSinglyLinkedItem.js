@@ -1,4 +1,4 @@
-let lists = require('../../data-structures/javascript/linkedLists.js');
+let lists = require('../../../data-structures/javascript/linkedLists.js');
 
 function deleteItem(item) {
     if (!item.next) {

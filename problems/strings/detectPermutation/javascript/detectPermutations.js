@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const quicksort = require('../../sorting-algorithms/quickSort/quickSortArray');
+const quicksort = require('../../../sorting-algorithms/quickSort/quickSortArray');
 
 
 module.exports = detectPermutations;
