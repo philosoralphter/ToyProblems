@@ -18,9 +18,8 @@ class Stack  {
 
     push (data)  {
         let prevHead = this.__data.head;
-        let newItem = new Item(data, prevHead);
 
-        this.__data.head = newItem;
+        this.__data.head = new Item(data, prevHead);
         return ++this.__data.length;
 
     }
@@ -32,7 +31,7 @@ class Stack  {
     length () {
         return this.__data.length;
     }
-};
+}
 
 
 function Item(data, next) {
@@ -47,4 +46,4 @@ function StackData() {
         length: 0,
         head: null
     };
-};
+}
