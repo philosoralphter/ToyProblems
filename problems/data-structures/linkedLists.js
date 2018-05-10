@@ -1,6 +1,10 @@
 //very basic implementation of singly and doubly linked lists.  list constructors only create a list from an array, no helper methods
 //
 
+
+////////
+//SINGLE
+////////
 class SinglyLinkedList {
     constructor(arr) {
         if (arr && Array.isArray(arr)) {
@@ -20,9 +24,20 @@ class SinglyLinkedNode {
     constructor(data, next) {
         this.data = data;
         this.next = next || null;
+
+        this.toString = () => {
+            return this.data.toString()
+        }
     }
 }
 
+
+
+
+
+////////
+//DOUBLE
+////////
 class DoublyLinkedList {
     constructor(arr) {
         if (arr && Array.isArray(arr)) {
@@ -40,6 +55,7 @@ class DoublyLinkedList {
             this.tail = null;
         }
     }
+
 }
 
 class DoublyLinkedNode {
@@ -47,9 +63,44 @@ class DoublyLinkedNode {
         this.data = data;
         this.prev = prev || null;
         this.next = next || null;
+
+        this.toString = () => {return this.data.toString()}
     }
 }
 
+DoublyLinkedList.prototype.toString = function () {
+    return listUtils.serializeList(this);
+};
+SinglyLinkedList.prototype.toString = function () {
+    return listUtils.serializeList(this);
+};
+
+
+
+
+//UTILS
+let listUtils = {
+    serializeList: function (listOrHead) {
+        let serializedList = '';
+
+        {
+            let thisItem = listOrHead.head || listOrHead;
+            do {
+                serializedList += thisItem.data;
+                if (thisItem.next) {
+                    serializedList += '->';
+                }
+                thisItem = thisItem.next;
+            }
+            while (thisItem && thisItem.data);
+        }
+
+        return serializedList;
+    }
+};
+
+
+//EXPORTS
 module.exports = {
     SinglyLinked: SinglyLinkedList,
     DoublyLinked: DoublyLinkedList,
@@ -59,23 +110,5 @@ module.exports = {
         DoublyLinked: DoublyLinkedNode
     },
 
-    utils: {
-        serializeList: function (listOrHead) {
-            let serializedList = '';
-
-            {
-                let thisItem = listOrHead.head || listOrHead;
-                do {
-                    serializedList += thisItem.data;
-                    if (thisItem.next) {
-                        serializedList += '->';
-                    }
-                    thisItem = thisItem.next;
-                }
-                while (thisItem && thisItem.data);
-            }
-
-            return serializedList;
-        }
-    }
+    utils: listUtils
 };
