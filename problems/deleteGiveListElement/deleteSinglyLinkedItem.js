@@ -10,18 +10,22 @@ function deleteItem(item) {
     return true;
 }
 
-(function test() {
+// (function test() {
+//
+//     // let testListElements = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+//     let testListElements = [1, 2, 3,1,2,3];
+//
+//     let testList = new lists.SinglyLinked(testListElements);
+//     let item = testList.head.next.next.next;
+//
+//
+//     console.log('Entire List: ', lists.utils.serializeList(testList.head));
+//     console.log('Item to Delete: ', item);
+//     deleteItem(item);
+//     console.log('Deleted.  Resulting List: ', lists.utils.serializeList(testList.head))
+//     // deleteItem(item);
+//     // console.log('Deleted.  Resulting List: ', lists.utils.serializeList(testList.head))
+//
+// })();
 
-    let testListElements = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-    let testList = new lists.SinglyLinked(testListElements);
-    let item = testList.head.next.next.next; //should be the 3 at index 3
-
-
-    console.log('Entire List: ', lists.utils.serializeList(testList.head));
-    console.log('Item to Delete: ', item);
-    deleteItem(item);
-    console.log('Deleted.  Resulting List: ', lists.utils.serializeList(testList.head))
-
-})();
-
+module.exports = deleteItem;
