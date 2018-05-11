@@ -1,5 +1,5 @@
-let lists = require('../../data-structures/javascript/linkedLists.js');
-let deleteSinglyLinkedElement = require('../lists/deleteGiveListElement/deleteSinglyLinkedItem');
+let lists = require('../../../data-structures/javascript/linkedLists.js');
+let deleteSinglyLinkedElement = require('../deleteGiveListElement/deleteSinglyLinkedItem');
 
 
 
