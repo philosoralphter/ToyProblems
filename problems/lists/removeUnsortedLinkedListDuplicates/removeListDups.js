@@ -2,8 +2,6 @@ let lists = require('../../../data-structures/javascript/linkedLists.js');
 let deleteSinglyLinkedElement = require('../deleteGivenListElement/deleteSinglyLinkedItem');
 
 
-
-
 function deDupListFast(list) {
     let seenValues = {};
 
