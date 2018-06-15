@@ -4,6 +4,9 @@ class BinarySearchTree {
             this.defaultComparator = comparator;
         } else {
             this.defaultComparator = function compareNumbers(item1, item2) {
+                if (item1 instanceof BSTNode && item2 instanceof BSTNode) {
+                    return item1.value - item2.value;
+                }
                 return item1 - item2;
             }
         }
@@ -27,28 +30,58 @@ class BinarySearchTree {
         this.itemCount++;
     }
 
-    remove() {
+    remove(value) {
         //TODO
+        
+
+
         this.itemCount--;
     }
 
+    //iteratively, for fun
     find(item, comparator) {
         let targetValue = item instanceof BSTNode ? item.value : item;
         let returnVal = null;
         let isFoundOrPassed = false;
         comparator = comparator || this.defaultComparator;
 
-        while (!isFoundOrPassed) {
+        let node = this.root;
+        let lastValue;
+        while (true) {
+            if (lastValue !== undefined) {
+                if (valueIsBetweenValues.bind(this)(targetValue, lastValue, node.value)){
+                    return null;
+                }
+            }
 
+            if (comparator(targetValue, node.value) === 0) {
+                return node;
+                break;
+            } else if (comparator(targetValue, node.value) > 0) {
+                if (!node.rightChild) return null;
+                else {
+                    node = node.rightChild;
+                    continue;
+                }
+            } else {
+                if (!node.leftChild) return null;
+                else {
+                    node = node.leftChild;
+                    continue;
+                }
+            }
         }
 
-        return returnVal;
+        function valueIsBetweenValues(val, val1, val2) {
+            return (comparator(val, val1) >= 0 && comparator(val, val2)<=0) ||
+            (comparator(val, val1) <= 0 && comparator(val, val2) >= 0);
+        }
     }
 
     prettyPrint() {
-        //doesn't really work but close enough for checking
+        //doesn't really work but close enough for checking, assumes balanced tree, etc. etc.
 
-        //find depth:
+        //find depth: (more or less)
         let node = this.root;
         let depth = 1;
         while (node.leftChild) {
@@ -172,5 +205,10 @@ function fillTreeWithSortedElements(tree, elements) {
     // console.log('/\\: ', tree);
 
     tree.prettyPrint();
-})()
+
+    let nextTree = new BinarySearchTree();
+
+    elements.map((elem) => {nextTree.insert(elem)});
+    nextTree.prettyPrint()
+})();
 
