@@ -32,50 +32,19 @@ class BinarySearchTree {
 
     remove(value) {
         //TODO
-        
+        let nodeAndParent = findNodeWithParentIterative(this, value);
+        let node = nodeAndParent.node;
+        let parent = nodeAndParent.parent;
 
+        deleteNodeRecursive(node, parent);
 
         this.itemCount--;
     }
 
     //iteratively, for fun
-    find(item, comparator) {
-        let targetValue = item instanceof BSTNode ? item.value : item;
-        let returnVal = null;
-        let isFoundOrPassed = false;
-        comparator = comparator || this.defaultComparator;
-
-        let node = this.root;
-        let lastValue;
-        while (true) {
-            if (lastValue !== undefined) {
-                if (valueIsBetweenValues.bind(this)(targetValue, lastValue, node.value)){
-                    return null;
-                }
-            }
-
-            if (comparator(targetValue, node.value) === 0) {
-                return node;
-                break;
-            } else if (comparator(targetValue, node.value) > 0) {
-                if (!node.rightChild) return null;
-                else {
-                    node = node.rightChild;
-                    continue;
-                }
-            } else {
-                if (!node.leftChild) return null;
-                else {
-                    node = node.leftChild;
-                    continue;
-                }
-            }
-        }
-
-        function valueIsBetweenValues(val, val1, val2) {
-            return (comparator(val, val1) >= 0 && comparator(val, val2)<=0) ||
-            (comparator(val, val1) <= 0 && comparator(val, val2) >= 0);
-        }
+    find(item) {
+        let found = findNodeWithParentIterative(this, item);
+        return found ? found.node : found;
     }
 
     prettyPrint() {
@@ -195,6 +164,91 @@ function fillTreeWithSortedElements(tree, elements) {
     }
 }
 
+function deleteNodeRecursive(node, parent) {
+    console.log('deleting: ', node, '\nON: ', parent)
+
+    let childrenCount = countChildren(node);
+
+    switch (childrenCount) {
+        case 0 :
+            if (node === parent.rightChild) {
+                parent.rightChild = null;
+            } else if (node === parent.leftChild){
+                parent.leftChild = null;
+            }
+            break;
+
+        case 1 :
+            if (node.value > parent.value) {
+                parent.rightChild = node.leftChild || node.rightChild;
+            } else {
+                parent.leftChild = node.leftChild || node.rightChild;
+            }
+            break;
+
+        case 2 :
+            //node has multiple children.  find it's lowest item to right, copy value here,
+            // and repeat with that node to delete it from down there until another case exists
+            let lowestNextNode = node.rightChild;
+            let lowestNextNodesParent = node;
+            while (lowestNextNode.leftChild) {
+                lowestNextNodesParent = lowestNextNode;
+                lowestNextNode = lowestNextNode.leftChild;
+            }
+
+            node.value = lowestNextNode.value;
+            return deleteNodeRecursive(lowestNextNode, lowestNextNodesParent);
+    }
+}
+
+function countChildren(node) {
+    let count = 0;
+    if (node.leftChild) count++;
+    if (node.rightChild) count++;
+
+    return count;
+}
+
+function valueIsBetweenValues(val, val1, val2, comparator) {
+    return (comparator(val, val1) >= 0 && comparator(val, val2) <= 0) ||
+        (comparator(val, val1) <= 0 && comparator(val, val2) >= 0);
+}
+
+/*
+  returns: {node: <BSTNode>, parent: <BSTNode>}
+*/
+function findNodeWithParentIterative (tree, valueOrNode) {
+    let targetValue = valueOrNode instanceof BSTNode ? valueOrNode.value : valueOrNode;
+    let comparator = tree.defaultComparator;
+
+    let node = tree.root;
+    let parent = null;
+
+    while (true) {
+        if (comparator(targetValue, node.value) === 0) {
+            return {
+                node: node,
+                parent: parent
+            };
+        } else if (comparator(targetValue, node.value) > 0) {
+            if (!node.rightChild) return null;
+            else {
+                parent = node;
+                node = node.rightChild;
+            }
+        } else {
+            if (!node.leftChild) return null;
+            else {
+                parent = node;
+                node = node.leftChild;
+            }
+        }
+    }
+}
+
+
+
+
 //
 //TEST
 //
@@ -206,9 +260,7 @@ function fillTreeWithSortedElements(tree, elements) {
 
     tree.prettyPrint();
 
-    let nextTree = new BinarySearchTree();
-
-    elements.map((elem) => {nextTree.insert(elem)});
-    nextTree.prettyPrint()
+    tree.remove(10)
+    tree.prettyPrint();
 })();
 
