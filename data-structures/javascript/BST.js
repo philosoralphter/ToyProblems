@@ -3,12 +3,7 @@ class BinarySearchTree {
         if (comparator) {
             this.defaultComparator = comparator;
         } else {
-            this.defaultComparator = function compareNumbers(item1, item2) {
-                if (item1 instanceof BSTNode && item2 instanceof BSTNode) {
-                    return item1.value - item2.value;
-                }
-                return item1 - item2;
-            }
+            this.defaultComparator = compareNumbers;
         }
 
         this.itemCount = 0;
@@ -31,7 +26,6 @@ class BinarySearchTree {
     }
 
     remove(value) {
-        //TODO
         let nodeAndParent = findNodeWithParentIterative(this, value);
         let node = nodeAndParent.node;
         let parent = nodeAndParent.parent;
@@ -105,7 +99,6 @@ module.exports = BinarySearchTree;
 
 
 // Functions
-
 function insertValueOnRootRecursive(root, value) {
     if (value <= root.value) {
         if (root.leftChild && root.leftChild.value !== null) insertValueOnRootRecursive(root.leftChild, value);
@@ -116,7 +109,7 @@ function insertValueOnRootRecursive(root, value) {
     }
 }
 
-function traverseBreadthFirst(node, valueIterator) {
+function traverseBreadthFirst(node, iteratee) {
     let queue = {
         head: null,
         tail: null,
@@ -144,10 +137,31 @@ function traverseBreadthFirst(node, valueIterator) {
     while (queue.head) {
         let node = queue.pop();
 
-        if (node) valueIterator(node.value);
+        if (node) iteratee(node.value);
         if (node.leftChild) queue.push(node.leftChild);
         if (node.rightChild) queue.push(node.rightChild);
     }
+}
+
+function traverseInorderRecursive (root, iteratee){
+    //left, self, right (value order)
+    if (root.leftChild) traverseInorderRecursive(root.leftChild, iteratee);
+    iteratee(root.value);
+    if (root.rightChild) traverseInorderRecursive(root.rightChild, iteratee);
+}
+
+function traversePostorderRecursive (root, iteratee){
+    //left, right, self
+    if (root.leftChild) traverseInorderRecursive(root.leftChild, iteratee);
+    if (root.rightChild) traverseInorderRecursive(root.rightChild, iteratee);
+    iteratee(root.value);
+}
+
+function traversePreorderRecursive (root, iteratee){
+    //self, left, right
+    iteratee(root.value);
+    if (root.leftChild) traverseInorderRecursive(root.leftChild, iteratee);
+    if (root.rightChild) traverseInorderRecursive(root.rightChild, iteratee);
 }
 
 function fillTreeWithSortedElements(tree, elements) {
@@ -165,7 +179,6 @@ function fillTreeWithSortedElements(tree, elements) {
 }
 
 function deleteNodeRecursive(node, parent) {
-    console.log('deleting: ', node, '\nON: ', parent)
 
     let childrenCount = countChildren(node);
 
@@ -207,6 +220,13 @@ function countChildren(node) {
     if (node.rightChild) count++;
 
     return count;
+}
+
+function compareNumbers(item1, item2) {
+    let val1 = item1 instanceof BSTNode ? item1.value : item1;
+    let val2 = item2 instanceof BSTNode ? item2.value : item2;
+
+    return val1 - val2;
 }
 
 function valueIsBetweenValues(val, val1, val2, comparator) {
@@ -258,9 +278,20 @@ function findNodeWithParentIterative (tree, valueOrNode) {
 
     // console.log('/\\: ', tree);
 
-    tree.prettyPrint();
+    // tree.prettyPrint();
 
     tree.remove(10)
     tree.prettyPrint();
+
+    console.log('\n')
+    traverseInorderRecursive(tree.root, (item) => {process.stdout.write(' ' +item)})
+    console.log();
+    traversePreorderRecursive(tree.root, (item) => {process.stdout.write(' ' +item)})
+    console.log();
+    traversePostorderRecursive(tree.root, (item) => {process.stdout.write(' ' + item)})
+    console.log();
+    
+
+
 })();
 
