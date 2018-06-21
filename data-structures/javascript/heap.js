@@ -1,17 +1,27 @@
-module.exports = {
-    MaxHeap: function MaxHeap (elements) {
-        return new BaseHeap(false, elements);
-    },
+class _BaseHeap {
+    /**
+     *
+     * @param isMinHeap
+     * @param elements
+     * @param comparator {function} Function should return true if first element should take precedence over second, ie for max heap: elem1 > elem2.
+     */
+    constructor(isMinHeap, elements, comparator) {
+        this._isMinHeap = isMinHeap === true;
+        this._data = [];
 
-    MinHeap: function MinHeap (elements) {
-        return new BaseHeap(true, elements)
-    }
-};
-
-class BaseHeap {
-    constructor(isMinHeap, elements) {
-        this.isMinHeap = isMinHeap === true;
-        this.data = [];
+        if (comparator) {
+            this.comparator = comparator;
+        } else {
+            if (isMinHeap) {
+                this.comparator = function (elem1, elem2) {
+                    return elem1 < elem2;
+                }
+            } else {
+                this.comparator = function (elem1, elem2) {
+                    return elem1 > elem2;
+                }
+            }
+        }
 
         if (elements) {
             for (let i=0; i<elements.length; i++) {
@@ -21,8 +31,8 @@ class BaseHeap {
     }
 
     insert(value) {
-        this.data.push(value);
-        let newValueIndex = this.data.length - 1;
+        this._data.push(value);
+        let newValueIndex = this._data.length - 1;
 
         let iEvenChild = newValueIndex & 1 === 0 ? newValueIndex : null;
         let iOddChild = newValueIndex & 1 === 0 ? newValueIndex-1 : newValueIndex;
@@ -30,7 +40,7 @@ class BaseHeap {
         let iChildToSwap =  this._findChildIndexToBubble(iParent, iOddChild, iEvenChild);
 
         while (iChildToSwap >= 0 && iParent >=0) { //while one child is greater than parent
-            swap (this.data, iParent, iChildToSwap);
+            swap (this._data, iParent, iChildToSwap);
 
             iParent = getParent(iParent);
             iEvenChild = getEvenChild(iParent);
@@ -42,9 +52,9 @@ class BaseHeap {
     }
 
     pop() {
-        let returnElement = this.data[0];
-        this.data[0] = this.data[this.data.length-1];
-        this.data.pop();
+        let returnElement = this._data[0];
+        this._data[0] = this._data[this._data.length-1];
+        this._data.pop();
 
         let iParent = 0;
         let iOddChild = 1;
@@ -52,7 +62,7 @@ class BaseHeap {
         let bubbleDownIndex = this._findChildIndexToBubble(iParent, iOddChild, iEvenChild);
 
         while (bubbleDownIndex >= 1) {
-            swap(this.data, iParent, bubbleDownIndex);
+            swap(this._data, iParent, bubbleDownIndex);
 
             iParent = bubbleDownIndex;
             iOddChild = getOddChild(iParent);
@@ -65,44 +75,40 @@ class BaseHeap {
     }
 
     _findChildIndexToBubble(iParent, iOddChild, iEvenChild) {
-            // console.log('Heaping: evenIndex: %d evenChild: %d, OddChild: %d, Parent Data: %d, index: %d', iEvenChild, this.data[iEvenChild], this.data[iOddChild],  this.data[iParent], iParent, this)
-        if (this.isMinHeap) {
-        //MIN HEAP
-            if (iEvenChild >= 0
-                && this.data[iEvenChild] !== undefined
-                && Math.min(this.data[iEvenChild], this.data[iOddChild]) < this.data[iParent]) {
-                //have both children
+        // console.log('Heaping: evenIndex: %d evenChild: %d, OddChild: %d, Parent Data: %d, index: %d', iEvenChild, this._data[iEvenChild], this._data[iOddChild],  this._data[iParent], iParent, this)
 
-                    return this.data[iEvenChild] < this.data[iOddChild] ? iEvenChild : iOddChild;
+        if (iEvenChild >= 0
+            && this._data[iEvenChild] !== undefined
+            && (this.comparator(this._data[iOddChild], this._data[iParent]) || this.comparator(this._data[iEvenChild], this._data[iParent]))){
+            //have both children and at least one out of place
 
-            } else if (this.data[iOddChild] < this.data[iParent]) {
-                //have one child
-                return iOddChild;
-            } else {
-                //no children or parent already lesser
-                return -1;
-            }
+                return this.comparator(this._data[iEvenChild], this._data[iOddChild]) ? iEvenChild : iOddChild;
 
+        } else if (this.comparator(this._data[iOddChild], this._data[iParent])) {
+            //have one child and it's out of place
+            return iOddChild;
         } else {
-        //MAX HEAP
-            if (iEvenChild >= 0
-                && this.data[iEvenChild] !== undefined
-                && Math.max(this.data[iEvenChild], this.data[iOddChild]) > this.data[iParent]) {
-                //have both children
-                    return this.data[iEvenChild] > this.data[iOddChild] ? iEvenChild : iOddChild;
-
-            } else if (this.data[iOddChild] > this.data[iParent]) {
-                //have one child
-                return iOddChild;
-            } else {
-                //have no children or parent already greater
-                return -1;
-            }
+            //no children or parent already lesser
+            return -1;
         }
     }
 }
 
-//function
+module.exports = {
+    MaxHeap: class MaxHeap extends _BaseHeap {
+        constructor(elements, comparator) {
+            super(false, elements, comparator);
+        }
+    },
+
+    MinHeap: class MinHeap extends _BaseHeap {
+        constructor(elements, comparator) {
+            super(true, elements, comparator);
+        }
+    },
+};
+
+//functions
 function getParent(index) {
     let jnsq = index & 1 === 0 ? 2 : 1;
     return Math.floor((index - jnsq)/2)
@@ -136,13 +142,13 @@ function swap (arr, i1, i2) {
 
     let maxHeap = new module.exports.MaxHeap(elements);
     let minHeap = new module.exports.MinHeap(elements);
-    console.log('Max Heap: ', maxHeap)
-    console.log('Min Heap: ', minHeap)
+    console.log('Max Heap: ', maxHeap);
+    console.log('Min Heap: ', minHeap);
 
-    console.log(minHeap.pop(), minHeap)
-    console.log(maxHeap.pop(), maxHeap)
+    console.log(minHeap.pop(), minHeap);
+    console.log(maxHeap.pop(), maxHeap);
 
     maxHeap.insert(3.5);
-    console.log(maxHeap)
+    console.log(maxHeap);
 
-})()
+})();
