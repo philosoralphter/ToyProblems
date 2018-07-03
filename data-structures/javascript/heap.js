@@ -12,7 +12,7 @@ class _BaseHeap {
         if (comparator) {
             this.comparator = comparator;
         } else {
-            if (isMinHeap) {
+            if (this._isMinHeap) {
                 this.comparator = function (elem1, elem2) {
                     return elem1 < elem2;
                 }
